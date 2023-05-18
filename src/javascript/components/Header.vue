@@ -27,9 +27,6 @@ export default defineComponent({
       height="72"
     />
     <h2>Vue {{ version }} Playground</h2>
-    <p v-theme="`primary`">
-      This text will change color based on the directive value!
-    </p>
     <p class="lead">
       Below is an example form built with the Vue {{ version }} Composition API.
     </p>

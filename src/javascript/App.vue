@@ -20,5 +20,12 @@ export default defineComponent({
 
 <template>
 <Header />
+  <RenderTest/>
+  <br/>
+  <TestUseDirective/>
+  <br/>
+  <RenderDirectives/>
+  <br/>
+  <p v-theme="`secondary`">This text will change color based on the directive value!</p>
 <router-view />
 </template>
