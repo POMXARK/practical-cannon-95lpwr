@@ -1,0 +1,54 @@
+{
+  "name": "vue-3-playground",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blacksonic/vue-3-playground.git"
+  },
+  "scripts": {
+    "start": "vite",
+    "serve": "vite",
+    "build": "vite build",
+    "test": "npm run test:unit:javascript && npm run test:unit:typescript && npm run test:e2e:javascript && npm run test:e2e:typescript",
+    "test:unit:javascript": "vitest --dir src/javascript --run",
+    "test:unit:typescript": "vitest --dir src/typescript --run",
+    "test:e2e:javascript": "start-server-and-test start http-get://localhost:3000 e2e:javascript",
+    "test:e2e:typescript": "start-server-and-test start http-get://localhost:3000 e2e:typescript",
+    "e2e:javascript": "cypress run --config-file cypress-javascript.json",
+    "e2e:typescript": "cypress run --config-file cypress-typescript.json"
+  },
+  "dependencies": {
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.14",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@vitejs/plugin-vue": "^2.3.1",
+    "@vitejs/plugin-vue-jsx": "^1.3.10",
+    "@vue/compiler-sfc": "^3.2.33",
+    "@vue/test-utils": "^2.0.0-rc.20",
+    "cypress": "^9.5.4",
+    "jsdom": "^19.0.0",
+    "start-server-and-test": "^1.14.0",
+    "typescript": "^4.6.3",
+    "vite": "^2.9.5",
+    "vitest": "^0.9.3"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ]
+  },
+  "engines": {
+    "node": "14"
+  }
+}
