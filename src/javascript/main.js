@@ -1,4 +1,5 @@
-import { createApp, withDirectives, h, resolveDirective } from 'vue';
+import { createApp, withDirectives, h, resolveDirective, createElementVNode, withModifiers } from 'vue';
+import { EMPTY_OBJ } from '@vue/shared';
 import App from './App.vue';
 import store from './store';
 import router from './router';
@@ -74,8 +75,8 @@ app.directive("theme", {
 
 app.directive("icoHome", {
     mounted(el, binding) {
-        console.log('el:',el)
-        console.log('binding:',binding)
+        // console.log('el:',el)
+        // console.log('binding:',binding)
         el.innerHTML = icoHome()
     }
 })
@@ -94,6 +95,90 @@ app.component('icoTest', {
     }
 )
 
+app.component('exampleIco', {
+        props: ['name'],
+        render() {
+            return h('div',
+                withDirectives(
+                    h('span'),
+                    [
+                        [resolveDirective('icoHome')]
+                    ]
+                )
+            )
+        }
+    }
+)
+
+
+const VueIco =  {
+    install(Vue, options) {
+        console.log('app:', Vue)
+        console.log('options:', options)
+        console.log('element options:', options[this.name])
+
+        var namespace = options.namespace || 'ico';
+        console.log('namespace:', namespace)
+
+        Vue.directive('icoHome', {
+            mounted(el, binding) {
+                let icoFn = null;
+                icoFn = binding.arg;
+                console.log('el:',el)
+                console.log('binding:',binding)
+                console.log('icoFn:',icoFn)
+                console.log('test')
+                el.innerHTML = icoFn.call(null, binding.modifier, (binding.value || {}).color);
+                console.log('el.innerHTML:' , el.innerHTML)
+            }
+        })
+
+        console.log('resDirective ->', resolveDirective)
+        console.log('withDirectives ->', withDirectives)
+        app.component('ico', {
+                props: {
+                    name: {
+                        type: [String, Function]
+                    },
+                    size: {
+                        type: [String, Number],
+                        default: 24
+                    },
+                    color: {
+                        type: [String]
+                    },
+                },
+            render() {
+                    let vnode = createElementVNode('span');
+                resolveDirective('icoHome')
+                    console.log('namespace::', namespace)
+                    console.log('this.name::', this.name)
+                let directives = [[resolveDirective('icoHome')]];
+                let dir, value, arg, modifiers = {};
+                for (let i = 0; i < directives.length; i++) {
+                     [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
+                }
+
+                return h('span',
+                        withDirectives(
+                            vnode,[[dir, value, icoHome, modifiers]]
+                        )
+                    )
+                }
+            }
+        )
+    }
+}
+
+
+app.directive('demo', (el, binding) => {
+    console.log(binding.value.color) // => "white"
+    console.log(binding.value.text) // => "hello!"
+})
+
+app.use(VueIco, {
+    "home": icoHome,
+})
 
 app.component('TestUseDirective', {
     render() {

@@ -14,12 +14,18 @@ export default defineComponent({
     onMounted(() => {
       dispatch('onSetYear', new Date().getFullYear());
     });
+  },
+  methods: {
+    test() {
+      alert('test')
+    }
   }
 });
 </script>
 
 <template>
 <Header />
+  <button @click="test">Click Me!</button>
   <RenderTest/>
   <br/>
   <TestUseDirective/>
@@ -34,6 +40,9 @@ export default defineComponent({
   <br/>
   <icoTest/>
   <br/>
-  <icoTest/>
+  <exampleIco name="ico-home"/>
+  <br/>
+  <ico name="home"></ico>
 <router-view />
+  <div v-demo="{ color: 'white', text: 'hello!' }"></div>
 </template>
