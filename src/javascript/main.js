@@ -7,6 +7,47 @@ import './custom-element';
 
 const app = createApp(App);
 
+/// vue3 ico test
+const icoWrapper = function(svg, s, c) {
+    return '<svg fill="' + (c || 'currentcolor') + '" width="' + (s || 24) + '" height="' + (s || 24) + '" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + svg + '</svg>';
+};
+const icoHome = (s, c) => icoWrapper('<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', s, c);
+
+// step 1
+app.component('simpleIcoHome', {
+        render() {
+            return h('span', {
+                    innerHTML: '<svg width="190" height="160" xmlns="http://www.w3.org/2000/svg"><<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>'
+                }
+            )
+        }
+    }
+)
+
+// step 2
+app.component('simpleIcoHomeFn', {
+        render() {
+            return h('span', {
+                    innerHTML: icoHome()
+                }
+            )
+        }
+    }
+)
+
+app.component('ico', {
+        render() {
+            return h('span', {
+                    innerHTML: icoHome()
+                }
+            )
+        }
+    }
+)
+
+
+///
+
 app.component('RenderTest', {
     render() {
         return h('span', 'test render h()')

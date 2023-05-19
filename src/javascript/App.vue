@@ -27,5 +27,11 @@ export default defineComponent({
   <RenderDirectives/>
   <br/>
   <p v-theme="`secondary`">This text will change color based on the directive value!</p>
+  <simple-ico-home></simple-ico-home>
+  <simpleIcoHome/>
+  <br/>
+  <simpleIcoHomeFn/>
+  <br/>
+  <ico></ico>
 <router-view />
 </template>
