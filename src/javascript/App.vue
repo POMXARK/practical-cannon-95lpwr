@@ -32,6 +32,8 @@ export default defineComponent({
   <br/>
   <simpleIcoHomeFn/>
   <br/>
-  <ico></ico>
+  <icoTest/>
+  <br/>
+  <icoTest/>
 <router-view />
 </template>

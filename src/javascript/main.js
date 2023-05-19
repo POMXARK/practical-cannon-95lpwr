@@ -35,17 +35,6 @@ app.component('simpleIcoHomeFn', {
     }
 )
 
-app.component('ico', {
-        render() {
-            return h('span', {
-                    innerHTML: icoHome()
-                }
-            )
-        }
-    }
-)
-
-
 ///
 
 app.component('RenderTest', {
@@ -82,6 +71,29 @@ app.directive("theme", {
         }
     }
 })
+
+app.directive("icoHome", {
+    mounted(el, binding) {
+        console.log('el:',el)
+        console.log('binding:',binding)
+        el.innerHTML = icoHome()
+    }
+})
+
+app.component('icoTest', {
+        render() {
+            return h('div',
+                withDirectives(
+                    h('span'),
+                    [
+                        [resolveDirective('icoHome')]
+                    ]
+                )
+            )
+        }
+    }
+)
+
 
 app.component('TestUseDirective', {
     render() {
