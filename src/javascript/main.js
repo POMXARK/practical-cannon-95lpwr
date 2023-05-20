@@ -13,6 +13,7 @@ const icoWrapper = function(svg, s, c) {
     return '<svg fill="' + (c || 'currentcolor') + '" width="' + (s || 24) + '" height="' + (s || 24) + '" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + svg + '</svg>';
 };
 const icoHome = (s, c) => icoWrapper('<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', s, c);
+const icoAccessibility = (s, c) => icoWrapper('<path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>', s, c);
 
 // step 1
 app.component('simpleIcoHome', {
@@ -111,62 +112,68 @@ app.component('exampleIco', {
 )
 
 
-const VueIco =  {
+const VueIco = {
     install(Vue, options) {
-        console.log('app:', Vue)
-        console.log('options:', options)
-        console.log('element options:', options[this.name])
 
-        var namespace = options.namespace || 'ico';
-        console.log('namespace:', namespace)
+         for (const [key, value] of Object.entries(options)) {
 
-        Vue.directive('icoHome', {
-            mounted(el, binding) {
-                let icoFn = null;
-                icoFn = binding.arg;
-                console.log('el:',el)
-                console.log('binding:',binding)
-                console.log('icoFn:',icoFn)
-                console.log('test')
-                el.innerHTML = icoFn.call(null, binding.modifier, (binding.value || {}).color);
-                console.log('el.innerHTML:' , el.innerHTML)
-            }
-        })
+             console.log('app:', Vue)
+             console.log('options:', options)
+             console.log('element options:', Object.entries(options)[0][1]['name'])
+             const name = 'ico' + key.charAt(0).toUpperCase() + key.slice(1)
+             var icoFn = value;
+             console.log('namespace:', name)
 
-        console.log('resDirective ->', resolveDirective)
-        console.log('withDirectives ->', withDirectives)
-        app.component('ico', {
-                props: {
-                    name: {
-                        type: [String, Function]
+             Vue.directive(name, {
+                 mounted(el, binding) {
+                     let icoFn = null;
+                     icoFn = binding.arg;
+                     console.log('el:', el)
+                     console.log('binding:', binding)
+                     console.log('icoFn:', icoFn)
+                     console.log('test')
+                     el.innerHTML = icoFn.call(null, binding.modifier, (binding.value || {}).color);
+                     console.log('el.innerHTML:', el.innerHTML)
+                 }
+             })
+         }
+
+            console.log('resDirective ->', resolveDirective)
+            console.log('withDirectives ->', withDirectives)
+            app.component('ico', {
+                    props: {
+                        name: {
+                            type: [String, Function]
+                        },
+                        size: {
+                            type: [String, Number],
+                            default: 24
+                        },
+                        color: {
+                            type: [String]
+                        },
                     },
-                    size: {
-                        type: [String, Number],
-                        default: 24
-                    },
-                    color: {
-                        type: [String]
-                    },
-                },
-            render() {
-                    let vnode = createElementVNode('span');
-                resolveDirective('icoHome')
-                    console.log('namespace::', namespace)
-                    console.log('this.name::', this.name)
-                let directives = [[resolveDirective('icoHome')]];
-                let dir, value, arg, modifiers = {};
-                for (let i = 0; i < directives.length; i++) {
-                     [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
-                }
+                    render() {
+                        let vnode = createElementVNode('span');
+                        console.log('this.name::', this.name)
+                        console.log('icoFn::', icoFn)
+                        console.log('options::', options)
+                        const name = 'ico' + this.name.charAt(0).toUpperCase() + this.name.slice(1)
+                        let directives = [[resolveDirective(name)]];
+                        let dir, value, arg, modifiers = {};
+                        for (let i = 0; i < directives.length; i++) {
+                            [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
+                        }
 
-                return h('span',
-                        withDirectives(
-                            vnode,[[dir, value, icoHome, modifiers]]
+                        return h('span',
+                            withDirectives(
+                                vnode, [[dir, value, options[this.name], modifiers]]
+                            )
                         )
-                    )
+                    }
                 }
-            }
-        )
+            )
+       // }
     }
 }
 
@@ -178,6 +185,7 @@ app.directive('demo', (el, binding) => {
 
 app.use(VueIco, {
     "home": icoHome,
+    "accessibility": icoAccessibility
 })
 
 app.component('TestUseDirective', {

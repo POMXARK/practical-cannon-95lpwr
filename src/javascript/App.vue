@@ -37,12 +37,16 @@ export default defineComponent({
   <simpleIcoHome/>
   <br/>
   <simpleIcoHomeFn/>
+<!--  <br/>-->
+<!--  <icoTest/>-->
   <br/>
-  <icoTest/>
-  <br/>
-  <exampleIco name="ico-home"/>
+<!--  <exampleIco name="ico-home"/>-->
   <br/>
   <ico name="home"></ico>
+  <ico name="accessibility"></ico>
+  <ico name="accessibility"></ico>
+  <ico name="home"></ico>
+  <ico name="accessibility"></ico>
 <router-view />
   <div v-demo="{ color: 'white', text: 'hello!' }"></div>
 </template>
