@@ -37,7 +37,7 @@ export default defineComponent({
   <simpleIcoHome/>
   <br/>
   <simpleIcoHomeFn/>
-<!--  <br/>-->
+  <br/>
 <!--  <icoTest/>-->
   <br/>
 <!--  <exampleIco name="ico-home"/>-->
@@ -45,8 +45,11 @@ export default defineComponent({
   <ico name="home"></ico>
   <ico name="accessibility"></ico>
   <ico name="accessibility"></ico>
-  <ico name="home"></ico>
-  <ico name="accessibility"></ico>
+  <ico name="not_exist_not_broken_icons"></ico>
+  <ico name="acc" size="54" color="#f00"></ico>
+  <ico name="anyname" size="124" color="green"/>
+  <ico name="acc" size="54" color="#f00"></ico>
+  <ico name="home-tt" size="124" color="gray"/>
 <router-view />
   <div v-demo="{ color: 'white', text: 'hello!' }"></div>
 </template>

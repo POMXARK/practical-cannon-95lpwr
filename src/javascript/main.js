@@ -13,6 +13,7 @@ const icoWrapper = function(svg, s, c) {
     return '<svg fill="' + (c || 'currentcolor') + '" width="' + (s || 24) + '" height="' + (s || 24) + '" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + svg + '</svg>';
 };
 const icoHome = (s, c) => icoWrapper('<path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>', s, c);
+const icoHomeTwoTone = (s, c) => icoWrapper('<path d="M19,11v9h-5v-6h-4v6H5v-9H3.6L12,3.4l8.4,7.6H19z" opacity=".3"></path><path d="M20,21h-7v-6h-2v6H4v-9H1l11-9.9L23,12h-3V21z M15,19h3v-8.8l-6-5.4l-6,5.4V19h3v-6h6V19z"></path>', s, c);
 const icoAccessibility = (s, c) => icoWrapper('<path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm9 7h-6v13h-2v-6h-2v6H9V9H3V7h18v2z"/>', s, c);
 
 // step 1
@@ -120,19 +121,18 @@ const VueIco = {
              console.log('app:', Vue)
              console.log('options:', options)
              console.log('element options:', Object.entries(options)[0][1]['name'])
-             const name = 'ico' + key.charAt(0).toUpperCase() + key.slice(1)
+             const name = value['name']
              var icoFn = value;
              console.log('namespace:', name)
 
              Vue.directive(name, {
                  mounted(el, binding) {
-                     let icoFn = null;
                      icoFn = binding.arg;
                      console.log('el:', el)
                      console.log('binding:', binding)
                      console.log('icoFn:', icoFn)
                      console.log('test')
-                     el.innerHTML = icoFn.call(null, binding.modifier, (binding.value || {}).color);
+                     el.innerHTML = icoFn.call(null, binding.modifiers.size, binding.modifiers.color);
                      console.log('el.innerHTML:', el.innerHTML)
                  }
              })
@@ -158,22 +158,22 @@ const VueIco = {
                         console.log('this.name::', this.name)
                         console.log('icoFn::', icoFn)
                         console.log('options::', options)
-                        const name = 'ico' + this.name.charAt(0).toUpperCase() + this.name.slice(1)
-                        let directives = [[resolveDirective(name)]];
-                        let dir, value, arg, modifiers = {};
-                        for (let i = 0; i < directives.length; i++) {
-                            [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
-                        }
+                        if (options[this.name] !== undefined) {
+                            let directives = [[resolveDirective( options[this.name]['name'] )]];
+                            let dir, value, arg, modifiers = {};
+                            for (let i = 0; i < directives.length; i++) {
+                                [dir, value, arg, modifiers = EMPTY_OBJ] = directives[i];
+                            }
 
-                        return h('span',
-                            withDirectives(
-                                vnode, [[dir, value, options[this.name], modifiers]]
+                            return h('span',
+                                withDirectives(
+                                    vnode, [[dir, value, options[this.name], {'size': this.size, 'color': this.color}]]
+                                )
                             )
-                        )
+                        }
                     }
                 }
             )
-       // }
     }
 }
 
@@ -184,8 +184,10 @@ app.directive('demo', (el, binding) => {
 })
 
 app.use(VueIco, {
+    "home-tt" : icoHomeTwoTone,
+    "anyname": icoHome,
     "home": icoHome,
-    "accessibility": icoAccessibility
+    "acc": icoAccessibility
 })
 
 app.component('TestUseDirective', {
